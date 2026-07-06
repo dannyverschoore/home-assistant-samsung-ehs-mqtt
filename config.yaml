@@ -1,0 +1,15 @@
+name: Samsung EHS MQTT
+version: "1.0.0"
+slug: samsung_ehs_mqtt
+description: Samsung EHS F1/F2 MQTT sensor bridge
+startup: services
+boot: auto
+init: false
+host_dbus: false
+uart: true
+arch:
+  - amd64
+  - aarch64
+  - armv7
+options: {}
+schema: {}
