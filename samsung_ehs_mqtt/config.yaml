@@ -1,5 +1,5 @@
 name: Samsung EHS MQTT
-version: "1.0.5"
+version: "1.0.6"
 slug: samsung_ehs_mqtt
 description: Samsung EHS F1/F2 MQTT sensor bridge
 url: "https://github.com/dannyverschoore/home-assistant-samsung-ehs-mqtt"
