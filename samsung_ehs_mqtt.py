@@ -1,3 +1,4 @@
+import os
 import serial
 import json
 import time
@@ -7,12 +8,12 @@ import paho.mqtt.client as mqtt
 
 from pysamsungnasa.protocol.factory.messages import outdoor, indoor, basic, network
 
-PORT = "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0"
+PORT = os.getenv("SERIAL_PORT", "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0")
 
-MQTT_HOST = "core-mosquitto"
-MQTT_PORT = 1883
-MQTT_USER = "mqtt_samsung"
-MQTT_PASSWORD = "samsung12345"
+MQTT_HOST = os.getenv("MQTT_HOST", "core-mosquitto")
+MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))
+MQTT_USER = os.getenv("MQTT_USER", "mqtt_samsung")
+MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", "samsung12345")
 
 BASE = "samsung_ehs"
 MODULES = [outdoor, indoor, basic, network]

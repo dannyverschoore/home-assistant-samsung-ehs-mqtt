@@ -1,15 +1,25 @@
 name: Samsung EHS MQTT
-version: "1.0.0"
+version: "1.0.1"
 slug: samsung_ehs_mqtt
 description: Samsung EHS F1/F2 MQTT sensor bridge
+url: https://github.com/dannyverschoore/home-assistant-samsung-ehs-mqtt
 startup: services
 boot: auto
 init: false
-host_dbus: false
 uart: true
 arch:
   - amd64
   - aarch64
   - armv7
-options: {}
-schema: {}
+options:
+  serial_port: "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0"
+  mqtt_host: "core-mosquitto"
+  mqtt_port: 1883
+  mqtt_user: "mqtt_samsung"
+  mqtt_password: "samsung12345"
+schema:
+  serial_port: str
+  mqtt_host: str
+  mqtt_port: int
+  mqtt_user: str
+  mqtt_password: password
