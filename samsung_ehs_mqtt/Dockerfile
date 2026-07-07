@@ -1,13 +1,12 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM ghcr.io/home-assistant/amd64-base:latest
 
 RUN apk add --no-cache python3 py3-pip
 
-RUN pip3 install --break-system-packages pyserial paho-mqtt pysamsungnasa
+WORKDIR /app
 
-COPY run.sh /
-COPY samsung_ehs_mqtt.py /
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-RUN chmod a+x /run.sh
+COPY . .
 
-CMD [ "/run.sh" ]
+CMD ["python3", "main.py"]
