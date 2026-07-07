@@ -1,5 +1,5 @@
 name: Samsung EHS MQTT
-version: "1.0.2"
+version: "1.0.3"
 slug: samsung_ehs_mqtt
 description: Samsung EHS F1/F2 MQTT sensor bridge
 url: https://github.com/dannyverschoore/home-assistant-samsung-ehs-mqtt
@@ -29,3 +29,7 @@ schema:
   print_values: bool
   heartbeat_seconds: int
   republish_seconds: int
+build_from:
+  amd64: ghcr.io/home-assistant/amd64-base:latest
+  aarch64: ghcr.io/home-assistant/aarch64-base:latest
+  armv7: ghcr.io/home-assistant/armv7-base:latest
