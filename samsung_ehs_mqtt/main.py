@@ -226,7 +226,22 @@ def heartbeat():
 
 
 print(f"MQTT verbonden, {len(MESSAGES)} bruikbare NASA messages geladen", flush=True)
+def publish_all_zero():
+  now = time.time()
 
+  for msg_id, info in MESSAGES.items():
+    publish_discovery(msg_id, info)
+
+    client.publish(
+      f"{BASE}/{info['key']}/state",
+      0,
+      retain=True,
+    )
+
+    last_values[msg_id] = 0
+    last_publish_time[msg_id] = now
+
+  print("Samsung EHS niet beschikbaar - alle sensoren op 0 gezet", flush=True)
 while True:
   ser = None
 
@@ -286,6 +301,9 @@ while True:
 
   except Exception as e:
     print(f"Fout: {e}", flush=True)
+
+    publish_all_zero()
+
     print("Opnieuw proberen over 10 seconden...", flush=True)
     time.sleep(10)
 
