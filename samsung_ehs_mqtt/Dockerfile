@@ -9,4 +9,4 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "main.py"]
+CMD ["python3", "-u", "main.py"]

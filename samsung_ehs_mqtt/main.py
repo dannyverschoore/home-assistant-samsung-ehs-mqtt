@@ -1,11 +1,12 @@
-import serial
-import json
-import time
-import re
 import inspect
-import paho.mqtt.client as mqtt
+import json
+import re
+import time
 
-from pysamsungnasa.protocol.factory.messages import outdoor, indoor, basic, network
+import paho.mqtt.client as mqtt
+import serial
+from pysamsungnasa.protocol.factory.messages import basic, indoor, network, outdoor
+
 
 PORT = "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0"
 
@@ -21,12 +22,32 @@ PRINT_VALUES = False
 HEARTBEAT_SECONDS = 60
 REPUBLISH_SECONDS = 60
 
+# Als er gedurende deze tijd geen geldig Samsung NASA-frame wordt ontvangen,
+# worden alle MQTT-sensoren eenmalig op 0 gezet.
+DATA_TIMEOUT_SECONDS = 30
+
 KEEP_KEYWORDS = [
-  "outdoor", "ambient", "indoor", "room",
-  "water", "inlet", "outlet", "target",
-  "compressor", "frequency", "current", "voltage",
-  "power", "pump", "flow", "dhw", "tank",
-  "defrost", "mode", "operation", "error",
+  "outdoor",
+  "ambient",
+  "indoor",
+  "room",
+  "water",
+  "inlet",
+  "outlet",
+  "target",
+  "compressor",
+  "frequency",
+  "current",
+  "voltage",
+  "power",
+  "pump",
+  "flow",
+  "dhw",
+  "tank",
+  "defrost",
+  "mode",
+  "operation",
+  "error",
 ]
 
 KEEP_IDS = set()
@@ -98,6 +119,7 @@ published_discovery = set()
 last_values = {}
 last_publish_time = {}
 last_heartbeat = 0
+zero_published = False
 
 
 client = mqtt.Client()
@@ -132,6 +154,7 @@ def publish_discovery(msg_id, info):
   if unit:
     payload["unit_of_measurement"] = unit
     device_class = unit_to_device_class(unit)
+
     if device_class:
       payload["device_class"] = device_class
 
@@ -150,6 +173,7 @@ def read_value(payload, i):
   if prefix in (0x80, 0x40, 0x02):
     if i + 2 >= len(payload):
       return None, 1
+
     msg_id = (payload[i] << 8) | payload[i + 1]
     raw = payload[i + 2]
     return (msg_id, raw), 3
@@ -157,6 +181,7 @@ def read_value(payload, i):
   if prefix in (0x82, 0x42, 0x22):
     if i + 3 >= len(payload):
       return None, 1
+
     msg_id = (payload[i] << 8) | payload[i + 1]
     raw = int.from_bytes(payload[i + 2:i + 4], "big", signed=True)
     return (msg_id, raw), 4
@@ -164,6 +189,7 @@ def read_value(payload, i):
   if prefix in (0x84, 0x44, 0x24):
     if i + 5 >= len(payload):
       return None, 1
+
     msg_id = (payload[i] << 8) | payload[i + 1]
     raw = int.from_bytes(payload[i + 2:i + 6], "big", signed=True)
     return (msg_id, raw), 6
@@ -193,7 +219,38 @@ def publish_value(msg_id, value, info):
   last_publish_time[msg_id] = now
 
   if PRINT_VALUES:
-    print(f"{msg_id:04X} | {info['name']} = {value} {info['unit'] or ''}", flush=True)
+    print(
+      f"{msg_id:04X} | {info['name']} = {value} {info['unit'] or ''}",
+      flush=True,
+    )
+
+
+def publish_all_zero():
+  global zero_published
+
+  if zero_published:
+    return
+
+  now = time.time()
+
+  for msg_id, info in MESSAGES.items():
+    publish_discovery(msg_id, info)
+
+    client.publish(
+      f"{BASE}/{info['key']}/state",
+      0,
+      retain=True,
+    )
+
+    last_values[msg_id] = 0
+    last_publish_time[msg_id] = now
+
+  zero_published = True
+
+  print(
+    "Samsung EHS niet beschikbaar - alle sensoren op 0 gezet",
+    flush=True,
+  )
 
 
 def handle_payload(payload):
@@ -217,31 +274,22 @@ def heartbeat():
   global last_heartbeat
 
   now = time.time()
+
   if now - last_heartbeat >= HEARTBEAT_SECONDS:
     print(
-      f"Samsung EHS actief | sensors={len(last_values)} | mqtt={client.is_connected()}",
+      f"Samsung EHS actief | sensors={len(last_values)} | "
+      f"mqtt={client.is_connected()}",
       flush=True,
     )
     last_heartbeat = now
 
 
-print(f"MQTT verbonden, {len(MESSAGES)} bruikbare NASA messages geladen", flush=True)
-def publish_all_zero():
-  now = time.time()
+print(
+  f"MQTT verbonden, {len(MESSAGES)} bruikbare NASA messages geladen",
+  flush=True,
+)
 
-  for msg_id, info in MESSAGES.items():
-    publish_discovery(msg_id, info)
 
-    client.publish(
-      f"{BASE}/{info['key']}/state",
-      0,
-      retain=True,
-    )
-
-    last_values[msg_id] = 0
-    last_publish_time[msg_id] = now
-
-  print("Samsung EHS niet beschikbaar - alle sensoren op 0 gezet", flush=True)
 while True:
   ser = None
 
@@ -256,54 +304,63 @@ while True:
     )
 
     print(f"Seriële poort geopend: {ser.name}", flush=True)
+
     buffer = b""
+    last_valid_frame = time.time()
+    zero_published = False
 
     while True:
       heartbeat()
 
       data = ser.read(512)
 
-      if not data:
-        continue
+      if data:
+        buffer += data
 
-      buffer += data
+        while True:
+          start = buffer.find(b"\x34")
 
-      while True:
-        start = buffer.find(b"\x34")
+          if start < 0:
+            if len(buffer) > 4096:
+              buffer = b""
 
-        if start < 0:
-          if len(buffer) > 4096:
-            buffer = b""
-          break
+            break
 
-        if start > 0:
-          buffer = buffer[start:]
+          if start > 0:
+            buffer = buffer[start:]
 
-        next_start = buffer.find(b"\x34", 1)
+          next_start = buffer.find(b"\x34", 1)
 
-        if next_start < 0:
-          if len(buffer) > 4096:
-            buffer = buffer[-512:]
-          break
+          if next_start < 0:
+            if len(buffer) > 4096:
+              buffer = buffer[-512:]
 
-        frame = buffer[:next_start]
-        buffer = buffer[next_start:]
+            break
 
-        if len(frame) < 22:
-          continue
+          frame = buffer[:next_start]
+          buffer = buffer[next_start:]
 
-        payload = frame[19:-2]
-        handle_payload(payload)
+          if len(frame) < 22:
+            continue
+
+          # Er is weer een geldig frame ontvangen.
+          last_valid_frame = time.time()
+          zero_published = False
+
+          payload = frame[19:-2]
+          handle_payload(payload)
+
+      if time.time() - last_valid_frame >= DATA_TIMEOUT_SECONDS:
+        publish_all_zero()
 
   except KeyboardInterrupt:
     print("Gestopt", flush=True)
+    publish_all_zero()
     break
 
   except Exception as e:
     print(f"Fout: {e}", flush=True)
-
     publish_all_zero()
-
     print("Opnieuw proberen over 10 seconden...", flush=True)
     time.sleep(10)
 
