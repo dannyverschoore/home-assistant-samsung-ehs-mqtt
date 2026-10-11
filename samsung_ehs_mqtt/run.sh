@@ -8,9 +8,6 @@ export MQTT_PASSWORD="$(bashio::config 'mqtt_password')"
 export PRINT_VALUES="$(bashio::config 'print_values')"
 export HEARTBEAT_SECONDS="$(bashio::config 'heartbeat_seconds')"
 export REPUBLISH_SECONDS="$(bashio::config 'republish_seconds')"
+export DATA_TIMEOUT_SECONDS="$(bashio::config 'data_timeout_seconds')"
 
-echo "Samsung EHS MQTT add-on gestart"
-echo "Serial port: ${SERIAL_PORT}"
-echo "MQTT host: ${MQTT_HOST}:${MQTT_PORT}"
-
-python3 -u /samsung_ehs_mqtt.py
+exec python3 -u /app/main.py

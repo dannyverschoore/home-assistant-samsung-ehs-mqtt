@@ -8,5 +8,6 @@ COPY requirements.txt .
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 COPY . .
+RUN chmod +x /app/run.sh
 
-CMD ["python3", "-u", "main.py"]
+CMD ["/app/run.sh"]

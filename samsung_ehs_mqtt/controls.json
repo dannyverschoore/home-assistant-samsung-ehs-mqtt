@@ -1,0 +1,939 @@
+[
+  {
+    "id": 16897,
+    "domain": "number",
+    "name": "Zone 1 gewenste kamertemperatuur",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 0.1,
+    "min": 16,
+    "max": 30,
+    "step": 0.5,
+    "unit": "°C"
+  },
+  {
+    "id": 16967,
+    "domain": "number",
+    "name": "Zone 1 aanvoerwatertemperatuur",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 0.1,
+    "min": 5,
+    "max": 65,
+    "step": 0.5,
+    "unit": "°C"
+  },
+  {
+    "id": 16968,
+    "domain": "number",
+    "name": "Stooklijn verschuiving",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 0.1,
+    "min": -5,
+    "max": 5,
+    "step": 0.5,
+    "unit": "°C"
+  },
+  {
+    "id": 16970,
+    "domain": "number",
+    "name": "FSV 1011 - Koelen: maximale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1011,
+    "scale": 0.1,
+    "min": 18,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16971,
+    "domain": "number",
+    "name": "FSV 1012 - Koelen: minimale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1012,
+    "scale": 0.1,
+    "min": 5,
+    "max": 18,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16972,
+    "domain": "number",
+    "name": "FSV 1021 - Koelen: maximale kamertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1021,
+    "scale": 0.1,
+    "min": 28,
+    "max": 30,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16973,
+    "domain": "number",
+    "name": "FSV 1022 - Koelen: minimale kamertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1022,
+    "scale": 0.1,
+    "min": 18,
+    "max": 28,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16974,
+    "domain": "number",
+    "name": "FSV 1031 - Verwarmen: maximale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1031,
+    "scale": 0.1,
+    "min": 37,
+    "max": 65,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16975,
+    "domain": "number",
+    "name": "FSV 1032 - Verwarmen: minimale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1032,
+    "scale": 0.1,
+    "min": 15,
+    "max": 37,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16976,
+    "domain": "number",
+    "name": "FSV 1041 - Verwarmen: maximale kamertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1041,
+    "scale": 0.1,
+    "min": 18,
+    "max": 30,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16977,
+    "domain": "number",
+    "name": "FSV 1042 - Verwarmen: minimale kamertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 1042,
+    "scale": 0.1,
+    "min": 16,
+    "max": 18,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16980,
+    "domain": "number",
+    "name": "FSV 2011 - Buitentemperatuur bij maximale verwarming",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2011,
+    "scale": 0.1,
+    "min": -20,
+    "max": 5,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16981,
+    "domain": "number",
+    "name": "FSV 2012 - Buitentemperatuur bij minimale verwarming",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2012,
+    "scale": 0.1,
+    "min": 10,
+    "max": 20,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16982,
+    "domain": "number",
+    "name": "FSV 2021 - Verwarmingscurve 1: maximale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2021,
+    "scale": 0.1,
+    "min": 17,
+    "max": 65,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16983,
+    "domain": "number",
+    "name": "FSV 2022 - Verwarmingscurve 1: minimale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2022,
+    "scale": 0.1,
+    "min": 17,
+    "max": 65,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16984,
+    "domain": "number",
+    "name": "FSV 2031 - Verwarmingscurve 2: maximale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2031,
+    "scale": 0.1,
+    "min": 17,
+    "max": 65,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16985,
+    "domain": "number",
+    "name": "FSV 2032 - Verwarmingscurve 2: minimale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2032,
+    "scale": 0.1,
+    "min": 17,
+    "max": 65,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16986,
+    "domain": "number",
+    "name": "FSV 2051 - Buitentemperatuur bij maximale koeling",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2051,
+    "scale": 0.1,
+    "min": 25,
+    "max": 35,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16987,
+    "domain": "number",
+    "name": "FSV 2052 - Buitentemperatuur bij minimale koeling",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2052,
+    "scale": 0.1,
+    "min": 35,
+    "max": 45,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16988,
+    "domain": "number",
+    "name": "FSV 2061 - Koelcurve 1: maximale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2061,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16989,
+    "domain": "number",
+    "name": "FSV 2062 - Koelcurve 1: minimale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2062,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16990,
+    "domain": "number",
+    "name": "FSV 2071 - Koelcurve 2: maximale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2071,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16991,
+    "domain": "number",
+    "name": "FSV 2072 - Koelcurve 2: minimale watertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2072,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17133,
+    "domain": "number",
+    "name": "FSV 3081 - Vermogen bijverwarming trap 1",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 3081,
+    "scale": 1,
+    "min": 1,
+    "max": 6,
+    "step": 1,
+    "unit": "kW"
+  },
+  {
+    "id": 17134,
+    "domain": "number",
+    "name": "FSV 3082 - Vermogen bijverwarming trap 2",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 3082,
+    "scale": 1,
+    "min": 0,
+    "max": 6,
+    "step": 1,
+    "unit": "kW"
+  },
+  {
+    "id": 17006,
+    "domain": "number",
+    "name": "FSV 4013 - Buitentemperatuur om verwarmen te stoppen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4013,
+    "scale": 0.1,
+    "min": 10,
+    "max": 45,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17008,
+    "domain": "number",
+    "name": "FSV 4024 - Buitentemperatuur voor bijverwarming",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4024,
+    "scale": 0.1,
+    "min": -25,
+    "max": 35,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17009,
+    "domain": "number",
+    "name": "FSV 4025 - Watertemperatuur bijverwarming bij ontdooien",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4025,
+    "scale": 0.1,
+    "min": 10,
+    "max": 55,
+    "step": 5,
+    "unit": "°C"
+  },
+  {
+    "id": 17010,
+    "domain": "number",
+    "name": "FSV 4033 - Buitentemperatuur voor extra ketel",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4033,
+    "scale": 0.1,
+    "min": -20,
+    "max": 5,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17030,
+    "domain": "number",
+    "name": "FSV 4042 - Temperatuurverschil mengklep bij verwarmen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4042,
+    "scale": 0.1,
+    "min": 5,
+    "max": 15,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17031,
+    "domain": "number",
+    "name": "FSV 4043 - Temperatuurverschil mengklep bij koelen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4043,
+    "scale": 0.1,
+    "min": 5,
+    "max": 15,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16577,
+    "domain": "number",
+    "name": "FSV 4044 - Regelfactor mengklep",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4044,
+    "scale": 1,
+    "min": 1,
+    "max": 5,
+    "step": 1,
+    "unit": ""
+  },
+  {
+    "id": 17032,
+    "domain": "number",
+    "name": "FSV 4045 - Regelinterval mengklep",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4045,
+    "scale": 1,
+    "min": 1,
+    "max": 30,
+    "step": 1,
+    "unit": "min"
+  },
+  {
+    "id": 17033,
+    "domain": "number",
+    "name": "FSV 4046 - Looptijd mengklep",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4046,
+    "scale": 10,
+    "min": 60,
+    "max": 240,
+    "step": 30,
+    "unit": "s"
+  },
+  {
+    "id": 17034,
+    "domain": "number",
+    "name": "FSV 4052 - Gewenst temperatuurverschil waterpomp",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4052,
+    "scale": 0.1,
+    "min": 2,
+    "max": 8,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16579,
+    "domain": "number",
+    "name": "FSV 4053 - Regelfactor waterpomp",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4053,
+    "scale": 1,
+    "min": 1,
+    "max": 3,
+    "step": 1,
+    "unit": ""
+  },
+  {
+    "id": 17011,
+    "domain": "number",
+    "name": "FSV 5011 - Afwezig: koelwatertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5011,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17012,
+    "domain": "number",
+    "name": "FSV 5012 - Afwezig: kamertemperatuur bij koelen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5012,
+    "scale": 0.1,
+    "min": 18,
+    "max": 30,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17013,
+    "domain": "number",
+    "name": "FSV 5013 - Afwezig: verwarmingswatertemperatuur",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5013,
+    "scale": 0.1,
+    "min": 15,
+    "max": 55,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17014,
+    "domain": "number",
+    "name": "FSV 5014 - Afwezig: kamertemperatuur bij verwarmen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5014,
+    "scale": 0.1,
+    "min": 16,
+    "max": 30,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17015,
+    "domain": "number",
+    "name": "FSV 5015 - Afwezig: automatisch koelen curve 1",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5015,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17016,
+    "domain": "number",
+    "name": "FSV 5016 - Afwezig: automatisch koelen curve 2",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5016,
+    "scale": 0.1,
+    "min": 5,
+    "max": 25,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17017,
+    "domain": "number",
+    "name": "FSV 5017 - Afwezig: automatisch verwarmen curve 1",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5017,
+    "scale": 0.1,
+    "min": 15,
+    "max": 55,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17018,
+    "domain": "number",
+    "name": "FSV 5018 - Afwezig: automatisch verwarmen curve 2",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5018,
+    "scale": 0.1,
+    "min": 15,
+    "max": 55,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17115,
+    "domain": "number",
+    "name": "FSV 5082 - PV-regeling: verschuiving koeling",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5082,
+    "scale": 0.1,
+    "min": 1,
+    "max": 20,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17116,
+    "domain": "number",
+    "name": "FSV 5083 - PV-regeling: verschuiving verwarming",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5083,
+    "scale": 0.1,
+    "min": 1,
+    "max": 50,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 17117,
+    "domain": "number",
+    "name": "FSV 5092 - Smart Grid: verschuiving verwarming",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5092,
+    "scale": 0.1,
+    "min": 1,
+    "max": 50,
+    "step": 1,
+    "unit": "°C"
+  },
+  {
+    "id": 16385,
+    "domain": "select",
+    "name": "Modus kiezen",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "Automatisch": 0,
+      "Koelen": 1,
+      "Verwarmen": 4
+    }
+  },
+  {
+    "id": 16495,
+    "domain": "select",
+    "name": "Temperatuurregeling",
+    "target": "200000",
+    "advanced": true,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "Kamertemperatuur": 0,
+      "Aanvoerwater": 1
+    }
+  },
+  {
+    "id": 16531,
+    "domain": "select",
+    "name": "FSV 2041 - Stooklijn voor verwarmen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2041,
+    "scale": 1,
+    "options": {
+      "Stooklijn 1": 1,
+      "Stooklijn 2": 2
+    }
+  },
+  {
+    "id": 16532,
+    "domain": "select",
+    "name": "FSV 2081 - Stooklijn voor koelen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2081,
+    "scale": 1,
+    "options": {
+      "Stooklijn 1": 1,
+      "Stooklijn 2": 2
+    }
+  },
+  {
+    "id": 16533,
+    "domain": "select",
+    "name": "FSV 2091 - Externe thermostaat 1",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2091,
+    "scale": 1,
+    "options": {
+      "Geen externe thermostaat": 0,
+      "Alleen thermostaat": 1,
+      "Thermostaat, pomp stopt": 2,
+      "Thermostaat, pomp blijft aan": 3,
+      "Thermostaat, pomp cyclisch": 4
+    }
+  },
+  {
+    "id": 16679,
+    "domain": "select",
+    "name": "FSV 2093 - Pompregeling bij Samsung thermostaat",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 2093,
+    "scale": 1,
+    "options": {
+      "Alleen thermostaat": 1,
+      "Thermostaat, pomp stopt": 2,
+      "Thermostaat, pomp blijft aan": 3,
+      "Thermostaat, pomp cyclisch": 4
+    }
+  },
+  {
+    "id": 16543,
+    "domain": "select",
+    "name": "FSV 4021 - Type elektrische bijverwarming",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4021,
+    "scale": 1,
+    "options": {
+      "Niet gebruiken": 0,
+      "Bijverwarming met twee trappen": 1,
+      "Bijverwarming met één trap": 2
+    }
+  },
+  {
+    "id": 16544,
+    "domain": "select",
+    "name": "FSV 4022 - Voorrang elektrische elementen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4022,
+    "scale": 1,
+    "options": {
+      "Beide": 0,
+      "Bijverwarming": 1,
+      "Warmwaterelement": 2
+    }
+  },
+  {
+    "id": 16576,
+    "domain": "select",
+    "name": "FSV 4041 - Mengklepregeling",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4041,
+    "scale": 1,
+    "options": {
+      "Niet gebruiken": 0,
+      "Temperatuurverschil": 1,
+      "Stooklijn": 2
+    }
+  },
+  {
+    "id": 16578,
+    "domain": "select",
+    "name": "FSV 4051 - Modulerende waterpomp gebruiken",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4051,
+    "scale": 1,
+    "options": {
+      "Niet gebruiken": 0,
+      "Pompuitgang 100%": 1,
+      "Pompuitgang 70%": 2
+    }
+  },
+  {
+    "id": 16549,
+    "domain": "select",
+    "name": "FSV 5042 - Toegestane onderdelen bij vermogensbegrenzing",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5042,
+    "scale": 1,
+    "options": {
+      "Compressor en warmwaterelement toegestaan": 0,
+      "Alleen compressor toegestaan": 1,
+      "Alleen warmwaterelement toegestaan": 2,
+      "Geen onderdelen toegestaan": 3
+    }
+  },
+  {
+    "id": 16550,
+    "domain": "select",
+    "name": "FSV 5043 - Signaaltype vermogensbegrenzing",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5043,
+    "scale": 1,
+    "options": {
+      "Laag": 0,
+      "Hoog": 1
+    }
+  },
+  {
+    "id": 32771,
+    "domain": "select",
+    "name": "Buitenunit hoofdmodus",
+    "target": "100000",
+    "advanced": true,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "Koelen": 1,
+      "Verwarmen": 2,
+      "Koelen met voorrang": 3,
+      "Verwarmen met voorrang": 4
+    }
+  },
+  {
+    "id": 16384,
+    "domain": "switch",
+    "name": "Indoor Operation Power",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16454,
+    "domain": "switch",
+    "name": "Stille modus",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16493,
+    "domain": "switch",
+    "name": "Afwezigheidsmodus",
+    "target": "200000",
+    "advanced": false,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16545,
+    "domain": "switch",
+    "name": "FSV 4023 - Compensatie bij koud weer",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4023,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16546,
+    "domain": "switch",
+    "name": "FSV 4031 - Extra ketel gebruiken",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4031,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16547,
+    "domain": "switch",
+    "name": "FSV 4032 - Voorrang extra ketel",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 4032,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16657,
+    "domain": "switch",
+    "name": "Automatisch reinigen",
+    "target": "200000",
+    "advanced": true,
+    "fsv": null,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16548,
+    "domain": "switch",
+    "name": "FSV 5041 - Vermogensbegrenzing via extern contact",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5041,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16551,
+    "domain": "switch",
+    "name": "FSV 5051 - Externe frequentiebegrenzing gebruiken",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5051,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16667,
+    "domain": "switch",
+    "name": "FSV 5081 - PV-regeling via extern contact gebruiken",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5081,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  },
+  {
+    "id": 16668,
+    "domain": "switch",
+    "name": "FSV 5091 - Smart Grid via externe contacten gebruiken",
+    "target": "200000",
+    "advanced": true,
+    "fsv": 5091,
+    "scale": 1,
+    "options": {
+      "ON": 1,
+      "OFF": 0
+    }
+  }
+]
