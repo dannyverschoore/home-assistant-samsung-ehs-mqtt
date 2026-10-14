@@ -134,7 +134,9 @@ class USBControls:
                 raise ValueError('Deze instelling is nog niet geldig uitgelezen bij jouw regelkast')
             if spec['advanced'] and time.monotonic() >= self.unlock_until:
                 raise ValueError('Ontgrendel eerst de installateursinstellingen')
-            self.queue.appendleft({'type': 3, 'target': spec['target'], 'values': [(msg_id, raw)], 'time': time.monotonic(), 'advanced': spec['advanced']})
+            # FSV/reference settings use WRITE, not a temporary control REQUEST.
+            kind = 2 if spec['advanced'] else 3
+            self.queue.appendleft({'type': kind, 'target': spec['target'], 'values': [(msg_id, raw)], 'time': time.monotonic(), 'advanced': spec['advanced']})
             self.status('In wachtrij', f"{spec['name']}: {value}")
         except (ValueError, KeyError, OverflowError) as error:
             self.status('Geblokkeerd', str(error))
@@ -176,7 +178,9 @@ class USBControls:
         if self.pending and now >= self.pending['deadline']:
             old = self.pending
             self.pending = None
-            if old['type'] == 3:
+            if old['type'] == 2:
+                self.queue.appendleft({'type': 1, 'target': old['target'], 'values': [(i, 0) for i, _ in old['values']], 'confirm': old['values'], 'write_retry': True, 'time': now})
+            elif old['type'] == 3:
                 self.status('Geen bevestiging', f"Instelling {old['values'][0][0]:04X} is niet bevestigd; laatste echte waarde blijft staan")
             elif len(old['values']) > 1 and not old.get('confirm'):
                 self.split_read(old)
@@ -191,7 +195,7 @@ class USBControls:
         if self.pending or legacy_busy or now - bus_time < 0.1 or ser.in_waiting or not self.queue:
             return
         item = self.queue.popleft()
-        if item['type'] == 3 and (now - item['time'] > 20 or item['advanced'] and now >= self.unlock_until):
+        if item['type'] in (2, 3) and (now - item['time'] > 20 or item['advanced'] and now >= self.unlock_until):
             self.status('Geblokkeerd', 'Opdracht verlopen of installateursbediening vergrendeld')
             return
         packet = self.packet(item['target'], item['type'], item['values'])
@@ -199,7 +203,7 @@ class USBControls:
         ser.flush()
         item.update(number=self.counter, deadline=now + (15 if item['type'] == 3 else 4))
         self.pending = item
-        if item['type'] == 3:
+        if item['type'] in (2, 3):
             self.status('Verstuurd', f"{self.specs[item['values'][0][0]]['name']}; wachten op echte terugmelding")
 
     def split_read(self, item):
@@ -213,19 +217,31 @@ class USBControls:
         if item and source == item['target'] and destination == '80FF00' and number == item['number']:
             if kind == 7:
                 self.pending = None
-                if item['type'] == 3:
+                if item['type'] in (2, 3):
                     self.status('Afgewezen', f"Samsung wijst instelling {item['values'][0][0]:04X} af")
                 elif len(item['values']) > 1:
                     self.split_read(item)
-            elif kind == 6 and item['type'] == 3:
-                self.queue.appendleft({'type': 1, 'target': source, 'values': [(msg_id, 0) for msg_id, _ in item['values']], 'confirm': item['values'], 'time': time.monotonic()})
+            elif (kind == 6 and item['type'] in (2, 3)) or (kind == 5 and item['type'] == 2):
+                self.queue.appendleft({'type': 1, 'target': source, 'values': [(msg_id, 0) for msg_id, _ in item['values']], 'confirm': item['values'], 'write_retry': item['type'] == 2, 'time': time.monotonic()})
                 self.pending = None
             elif kind == 5 and item['type'] == 1:
                 self.pending = None
                 if item.get('confirm'):
                     got = dict(values or [])
                     success = all(got.get(msg_id) == raw for msg_id, raw in item['confirm'])
-                    self.status('Bevestigd' if success else 'Niet overgenomen', f"{self.specs[item['confirm'][0][0]]['name']}; gewenste waarde {'teruggemeld' if success else 'niet teruggemeld'}")
+                    msg_id, raw = item['confirm'][0]
+                    spec = self.specs[msg_id]
+                    # Some EHS controllers acknowledge a water REQUEST without
+                    # applying it. One WRITE retry, still within current limits.
+                    retry = False
+                    if not success and msg_id == 0x4247 and not item.get('write_retry'):
+                        lower, upper = self.allowed_range(spec)
+                        retry = lower <= raw * spec['scale'] <= upper
+                    if retry:
+                        self.queue.appendleft({'type': 2, 'target': source, 'values': item['confirm'], 'advanced': False, 'time': time.monotonic()})
+                        self.status('Herstelpoging', 'Waterdoel niet toegepast via REQUEST; eenmalige WRITE met terugleescontrole')
+                    else:
+                        self.status('Bevestigd' if success else 'Niet overgenomen', f"{spec['name']}; gewenste waarde {'teruggemeld' if success else 'niet teruggemeld'}")
                 else:
                     missing = [pair for pair in item['values'] if pair[0] not in dict(values or [])]
                     if len(item['values']) > 1 and missing:
