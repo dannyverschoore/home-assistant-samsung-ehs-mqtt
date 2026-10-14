@@ -137,15 +137,6 @@ class USBControls:
             # FSV/reference settings use WRITE, not a temporary control REQUEST.
             kind = 2 if spec['advanced'] else 3
             values = [(msg_id, raw)]
-            # NASA_SET_TEMP (4201) routes to waterOutSetTemp (4247) when
-            # isEhsSetTempWaterOut (406F) is set in the SAME control request.
-            # Writing the reporting register alone is acknowledged but ignored.
-            if msg_id == 0x4247:
-                if (spec['target'], 0x406F) not in self.valid:
-                    raise ValueError('Temperatuurreferentie is nog niet geldig uitgelezen')
-                values = [(0x406F, 1), (0x4201, raw)]
-            elif msg_id == 0x4201:
-                values = [(0x406F, 0), (0x4201, raw)]
             self.queue.appendleft({'type': kind, 'target': spec['target'], 'values': values, 'confirm_values': [(msg_id, raw)], 'name': spec['name'], 'time': time.monotonic(), 'advanced': spec['advanced']})
             self.status('In wachtrij', f"{spec['name']}: {value}")
         except (ValueError, KeyError, OverflowError) as error:
