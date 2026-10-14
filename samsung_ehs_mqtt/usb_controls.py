@@ -136,7 +136,17 @@ class USBControls:
                 raise ValueError('Ontgrendel eerst de installateursinstellingen')
             # FSV/reference settings use WRITE, not a temporary control REQUEST.
             kind = 2 if spec['advanced'] else 3
-            self.queue.appendleft({'type': kind, 'target': spec['target'], 'values': [(msg_id, raw)], 'time': time.monotonic(), 'advanced': spec['advanced']})
+            values = [(msg_id, raw)]
+            # NASA_SET_TEMP (4201) routes to waterOutSetTemp (4247) when
+            # isEhsSetTempWaterOut (406F) is set in the SAME control request.
+            # Writing the reporting register alone is acknowledged but ignored.
+            if msg_id == 0x4247:
+                if (spec['target'], 0x406F) not in self.valid:
+                    raise ValueError('Temperatuurreferentie is nog niet geldig uitgelezen')
+                values = [(0x406F, 1), (0x4201, raw)]
+            elif msg_id == 0x4201:
+                values = [(0x406F, 0), (0x4201, raw)]
+            self.queue.appendleft({'type': kind, 'target': spec['target'], 'values': values, 'confirm_values': [(msg_id, raw)], 'name': spec['name'], 'time': time.monotonic(), 'advanced': spec['advanced']})
             self.status('In wachtrij', f"{spec['name']}: {value}")
         except (ValueError, KeyError, OverflowError) as error:
             self.status('Geblokkeerd', str(error))
@@ -179,7 +189,8 @@ class USBControls:
             old = self.pending
             self.pending = None
             if old['type'] == 2:
-                self.queue.appendleft({'type': 1, 'target': old['target'], 'values': [(i, 0) for i, _ in old['values']], 'confirm': old['values'], 'write_retry': True, 'time': now})
+                expected = old.get('confirm_values', old['values'])
+                self.queue.appendleft({'type': 1, 'target': old['target'], 'values': [(i, 0) for i, _ in expected], 'confirm': expected, 'write_retry': True, 'time': now})
             elif old['type'] == 3:
                 self.status('Geen bevestiging', f"Instelling {old['values'][0][0]:04X} is niet bevestigd; laatste echte waarde blijft staan")
             elif len(old['values']) > 1 and not old.get('confirm'):
@@ -204,7 +215,7 @@ class USBControls:
         item.update(number=self.counter, deadline=now + (15 if item['type'] == 3 else 4))
         self.pending = item
         if item['type'] in (2, 3):
-            self.status('Verstuurd', f"{self.specs[item['values'][0][0]]['name']}; wachten op echte terugmelding")
+            self.status('Verstuurd', f"{item.get('name', self.specs[item['values'][0][0]]['name'])}; wachten op echte terugmelding")
 
     def split_read(self, item):
         for value in item['values']:
@@ -222,7 +233,8 @@ class USBControls:
                 elif len(item['values']) > 1:
                     self.split_read(item)
             elif (kind == 6 and item['type'] in (2, 3)) or (kind == 5 and item['type'] == 2):
-                self.queue.appendleft({'type': 1, 'target': source, 'values': [(msg_id, 0) for msg_id, _ in item['values']], 'confirm': item['values'], 'write_retry': item['type'] == 2, 'time': time.monotonic()})
+                expected = item.get('confirm_values', item['values'])
+                self.queue.appendleft({'type': 1, 'target': source, 'values': [(msg_id, 0) for msg_id, _ in expected], 'confirm': expected, 'write_retry': item['type'] == 2, 'time': time.monotonic()})
                 self.pending = None
             elif kind == 5 and item['type'] == 1:
                 self.pending = None
